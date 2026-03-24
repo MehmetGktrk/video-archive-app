@@ -5,5 +5,7 @@ module.exports = {
     databaseName: process.env.DATABASE_NAME,
     port: process.env.PORT,
 
+    jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
+
    
 }
