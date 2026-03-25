@@ -6,6 +6,9 @@ module.exports = {
     port: process.env.PORT,
 
     jwtAccessSecret: process.env.JWT_ACCESS_SECRET,
+    jwtAccessExpiration: process.env.JWT_ACCESS_EXPIRATION,
+
+
 
    
 }
