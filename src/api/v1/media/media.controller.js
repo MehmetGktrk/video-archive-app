@@ -2,11 +2,10 @@ const mediaService = require("./media.service");
 
 exports.createUploadUrl = async(req, res, next) => {
     try {
-        const { contentType, size } = req.body;
+        const { contentType} = req.body;
         const result = await mediaService.createUploadUrl({
             userId: req.user.id,
-            contentType: contentType,
-            size: size,
+            contentType: contentType
         });
 
         return res.status(200).json({
@@ -21,9 +20,12 @@ exports.createUploadUrl = async(req, res, next) => {
 
 exports.completeUpload = async(req, res, next) => {
     try {
-        const { key, contentType, size } = req.body;
+        const { title, keywords, description, key, contentType, size } = req.body;
         const result = await mediaService.completeUpload({
             userId: req.user.id,
+            title: title,
+            keywords: keywords,
+            description: description,
             key: key,
             contentType: contentType,
             size: size,
