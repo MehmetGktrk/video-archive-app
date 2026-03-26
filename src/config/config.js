@@ -12,7 +12,7 @@ module.exports = {
     awsSecretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     awsRegion: process.env.AWS_REGION,
     awsBucketName: process.env.AWS_BUCKET_NAME,
-
+    awsS3PresignedExpires: process.env.AWS_S3_PRESIGNED_EXPIRES,
 
 
    
