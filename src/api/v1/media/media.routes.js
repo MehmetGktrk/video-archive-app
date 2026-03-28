@@ -6,5 +6,8 @@ const authMiddleware = require("../../../middlewares/auth.middleware");
 
 router.post("/upload-url", authMiddleware, mediaController.createUploadUrl);
 router.post("/complete", authMiddleware, mediaController.completeUpload);
+router.get('/me', authMiddleware, mediaController.getUserMedias);
+router.get('/public/:mediaId', mediaController.getPublicMedia);
+router.get('/private/:mediaId', authMiddleware, mediaController.getPrivateMedia);
 
 module.exports = router;

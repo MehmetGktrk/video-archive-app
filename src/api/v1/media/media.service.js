@@ -7,6 +7,7 @@ const ApiError = require("../../../utils/apiError");
 const { buildMediaKey } = require("../../../utils/buildMediaKey");
 const mediaRepository = require("./media.repository");
 const { ObjectId } = require("mongodb");
+const { generateMediaUrl } = require("../../../utils/urlGenerator");
 
 exports.createUploadUrl = async({ userId, contentType }) => {
 
@@ -42,15 +43,56 @@ exports.completeUpload = async({ userId, title, keywords, description, key, cont
         contentType: contentType,
         size: Number(size),
         status: "uploaded",
+        visibility: "private",
         createdAt: now,
         updatedAt: now,
     };
 
     const mediaId = await mediaRepository.createMedia(mediaDoc);
 
-    console.log(mediaId);
-    console.log("--------------------------------");
-    console.log(mediaDoc);
-
     return mediaDoc;
+}
+
+exports.getUserMedias = async({ userId }) => {
+    const medias = await mediaRepository.findUserMediasByUserId(userId);
+
+    await Promise.all(
+        medias.map(async(media) => {
+            media.url = await generateMediaUrl(media.key);
+        })
+    );
+
+    return medias;
+};
+
+exports.getPrivateMedia = async({ userId, mediaId }) => {
+    
+    const media = await mediaRepository.findPrivateMediaById(userId, mediaId);
+
+    if(!media){
+        throw new ApiError(404, "MEDIA_NOT_FOUND", "Media not found");
+    }
+
+    return media;
+}
+
+exports.getPublicMedia = async({ mediaId }) => {
+    const media = await mediaRepository.findPublicMediaById(mediaId);
+
+    if(!media){
+        throw new ApiError(404, "MEDIA_NOT_FOUND", "Media not found");
+    }
+
+    if(media.visibility === "private"){
+        throw new ApiError(403, "MEDIA_NOT_PUBLIC", "Media is not public");
+    }
+
+    const url = await generateMediaUrl(media.key);
+
+    const mediaData = {
+        _id: media._id.toString(),
+        url: url
+    }
+
+    return mediaData;
 }

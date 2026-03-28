@@ -40,3 +40,54 @@ exports.completeUpload = async(req, res, next) => {
         return next(err);
     }
 }
+
+exports.getUserMedias = async(req, res, next) => {
+    try {
+        const result = await mediaService.getUserMedias({
+            userId: req.user.id
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "User medias fetched successfully",
+            data: result,
+        })
+    } catch (err) {
+        return next(err);
+    }
+}
+
+exports.getPrivateMedia = async(req, res, next) => {
+    try {
+        const { mediaId } = req.params;
+        const result = await mediaService.getPrivateMedia({
+            userId: req.user.id,
+            mediaId: mediaId
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Media fetched successfully",
+            data: result
+        })
+    } catch (err) {
+        return next(err);
+    }
+}
+
+exports.getPublicMedia = async(req, res, next) => {
+    try {
+        const mediaId = req.params.mediaId;
+        const result = await mediaService.getPublicMedia({
+            mediaId: mediaId
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Media fetched successfully",
+            data: result,
+        });
+    } catch (err) {
+        return next(err);
+    }
+}

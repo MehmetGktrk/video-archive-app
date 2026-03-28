@@ -14,6 +14,8 @@ module.exports = {
     awsBucketName: process.env.AWS_BUCKET_NAME,
     awsS3PresignedExpires: process.env.AWS_S3_PRESIGNED_EXPIRES,
 
+    defaultS3ViewExpires: 300,
+
 
    
 }
