@@ -91,3 +91,23 @@ exports.getPublicMedia = async(req, res, next) => {
         return next(err);
     }
 }
+
+exports.updateMetadata = async(req, res, next) => {
+    try {
+        const { mediaId } = req.params;
+        const { title, keywords, description } = req.body;
+        const result = await mediaService.updateMetadata({
+            userId: req.user.id,
+            mediaId: mediaId,
+            metadataObject: { title, keywords, description }
+        });
+
+        return res.status(200).json({
+            success: true,
+            message: "Media metadata updated successfully",
+            data: result,
+        });
+    } catch (err) {
+        return next(err);
+    }
+}

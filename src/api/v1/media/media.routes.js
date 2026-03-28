@@ -9,5 +9,6 @@ router.post("/complete", authMiddleware, mediaController.completeUpload);
 router.get('/me', authMiddleware, mediaController.getUserMedias);
 router.get('/public/:mediaId', mediaController.getPublicMedia);
 router.get('/private/:mediaId', authMiddleware, mediaController.getPrivateMedia);
+router.patch('/:mediaId', authMiddleware, mediaController.updateMetadata);
 
 module.exports = router;

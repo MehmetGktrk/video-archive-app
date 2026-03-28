@@ -21,3 +21,12 @@ exports.findPublicMediaById = async(mediaId) => {
     const db = getDB();
     return db.collection("media").findOne({ _id: new ObjectId(mediaId), visibility: "public" });
 }
+
+exports.updateMetadata = async(userId, mediaId, newMetadata) => {
+    const db = getDB();
+    const result = await db.collection("media").updateOne(
+        { _id: new ObjectId(mediaId), ownerId: new ObjectId(userId) },
+        { $set: { ...newMetadata, updatedAt: new Date() } }
+    );
+    return result.modifiedCount;
+}
