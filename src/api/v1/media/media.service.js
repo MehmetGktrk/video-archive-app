@@ -96,3 +96,24 @@ exports.getPublicMedia = async({ mediaId }) => {
 
     return mediaData;
 }
+
+exports.updateMetadata = async({ userId, mediaId, metadataObject }) => {
+
+    const convertedArray = Object.entries(metadataObject);
+
+    const newMetadata = {}
+
+    convertedArray.forEach(([key, value]) => {
+        if(value){
+            newMetadata[key] = value;
+        }
+    });
+
+    const updatedMedia = await mediaRepository.updateMetadata(userId, mediaId, newMetadata);
+
+    if(!updatedMedia){
+        throw new ApiError(404, "MEDIA_NOT_FOUND", "Media not found");
+    }
+
+    return newMetadata;
+}
